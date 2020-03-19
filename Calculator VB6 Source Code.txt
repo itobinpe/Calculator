@@ -1,0 +1,787 @@
+Dim ClickNumber As Integer
+Dim tempNum As String
+Dim tempNum2 As String
+Dim FirstNum As Double
+Dim SecondNum As Double
+Dim Add As Boolean
+Dim Subtract As Boolean
+Dim Multiply As Boolean
+Dim Divide As Boolean
+Dim ClearEntry As Boolean
+Dim Equal As Boolean
+Dim FunctionClick As Integer
+Dim tempNumberF As Double
+Dim Squared As Boolean
+Dim Cubed As Boolean
+Dim optCounter As Integer
+Dim SqrtB As Boolean
+Dim powerY As Boolean
+Dim nthRoot As Boolean
+Dim nCr As Boolean
+Dim tempnCr As Double
+Dim nPr As Boolean
+Dim tempnPr As Double
+Dim tempN As Double
+Dim tempnPrD As Double
+Dim temp2nPrD As Double
+Dim temp3nPrD As Double
+Dim Factorial As Boolean
+Dim logB As Boolean
+Dim lnB As Boolean
+
+Private Sub cmdButton_Click(Index As Integer)
+
+FunctionClick = FunctionClick + 1
+Equal = False
+
+Select Case Index
+
+    Case 0
+    
+        Call ResetP
+
+    Case 1
+
+        FunctionClick = 0
+        tempNum2 = 0
+        ClearEntry = True
+        Add = False
+        Subtract = False
+        Multiply = False
+        Divide = False
+        
+        If lblDisplay.Caption = "" Then
+        
+            MsgBox "Entry has been cleared."
+        
+        Else
+        
+            FirstNum = CDbl(lblDisplay.Caption)
+            lblDisplay.Caption = ""
+        
+        End If
+    
+    Case 2 'multiply
+    
+        If Subtract = True Or Add = True Or Divide = True Then
+        
+            Multiply = False
+            
+            If lblDisplay.Caption = "" Then
+            
+                FirstNum = 0
+            
+            Else
+            
+                Call Equation(CDbl(lblDisplay.Caption))
+            
+            End If
+            
+            FunctionClick = 2
+            Subtract = False
+            Multiply = False
+            Divide = False
+            
+        Else
+        
+            Multiply = True
+        
+        End If
+        
+        Call NotEqualP
+    
+    Case 3 'divide
+    
+        If Subtract = True Or Multiply = True Or Add = True Then
+        
+            Divide = False
+            
+            If lblDisplay.Caption = "" Then
+            
+                FirstNum = 0
+            
+            Else
+            
+                Call Equation(CDbl(lblDisplay.Caption))
+            
+            End If
+            
+            FunctionClick = 2
+            Subtract = False
+            Multiply = False
+            Divide = False
+            
+        Else
+        
+            Divide = True
+        
+        End If
+        
+        Call NotEqualP
+    
+    Case 4
+
+        Add = True
+        
+        If Subtract = True Or Multiply = True Or Divide = True Then
+
+                        
+            Add = True
+            
+            If lblDisplay.Caption = "" Then
+            
+                FirstNum = 0
+            
+            Else
+            
+                Call Equation(CDbl(lblDisplay.Caption))
+
+            End If
+            
+            FunctionClick = 2
+            Subtract = False
+            Multiply = False
+            Divide = False
+            
+        Else
+        
+            Add = True
+        
+        End If
+        
+        Call NotEqualP
+
+    Case 5
+        MsgBox Add
+        
+        If Add = True Or Multiply = True Or Divide = True Then
+            
+            Subtract = False
+            
+            If lblDisplay.Caption = "" Then
+            
+                FirstNum = 0
+            
+            Else
+            
+                Call Equation(CDbl(lblDisplay.Caption))
+            
+            End If
+            
+            FunctionClick = 2
+            Add = False
+            Multiply = False
+            Divide = False
+        
+        Else
+        
+            Subtract = True
+        
+        End If
+        
+        Call NotEqualP
+
+    
+    Case 6 'decimal
+    
+    FunctionClick = 0
+    lblDisplay.Caption = tempNum2 & "."
+    
+    Case 7 'equal
+    
+    ClearEntry = True
+    Equal = True
+    FunctionClick = 0
+ 
+    If tempNumberF <> 0 Then
+    
+        tempNumberF = 0
+        lblDisplay.Caption = FirstNum
+    
+    End If
+ 
+    If lblDisplay.Caption = "" Then
+        
+        MsgBox "Please insert a number."
+            
+        If ClearEntry = True Then
+                
+            If FirstNum = 0 Then
+            
+                lblDisplay.Caption = ""
+            
+            Else
+            
+                lblDisplay.Caption = FirstNum
+            
+            End If
+        
+        Else
+        
+            Call Equation(CDbl(lblDisplay.Caption))
+            ClearEntry = False
+    
+        End If
+        
+    Else
+
+        Call Equation(CDbl(lblDisplay.Caption))
+        
+    End If
+    
+End Select
+
+End Sub
+
+Private Sub cmdConstant_Click(Index As Integer)
+
+Select Case Index
+
+    Case 0
+    
+    FirstNum = 3.14159265
+    lblDisplay.Caption = FirstNum
+    
+    Case 1
+    
+    FirstNum = 2.71828183
+    lblDisplay.Caption = FirstNum
+
+End Select
+
+End Sub
+
+Private Sub cmdNumber_Click(Index As Integer)
+
+If SecondNum <> 0 Then
+
+    lblDisplay.Caption = ""
+    SecondNum = 0
+
+End If
+
+ClickNumber = ClickNumber + 1
+
+If ClickNumber = 1 Then
+
+    Call Entry(cmdNumber(Index).Index)
+
+End If
+
+If ClickNumber = 2 Then
+
+    tempNum = lblDisplay.Caption
+    ClickNumber = 1
+    Call Entry(cmdNumber(Index).Index)
+    
+End If
+
+End Sub
+
+Public Sub Entry(Num As String)
+
+tempNum2 = tempNum & Num
+
+lblDisplay.Caption = tempNum2
+
+End Sub
+
+Public Sub Equation(FinalNum As Double)
+
+Equal = False
+
+If SecondNum > 2E+100 Or FirstNum > 2E+100 Then
+
+    MsgBox "Value too high.", , "Error"
+
+ElseIf SecondNum < -2E+100 Or FirstNum < -2E+100 Then
+
+    MsgBox "Value too low.", , "Error"
+
+Else
+
+    If Add = True Then 'add
+
+        Add = False
+        SecondNum = FirstNum + FinalNum
+        lblDisplay.Caption = SecondNum
+
+    End If
+
+    If Subtract = True Then 'subtract
+
+        Subtract = False
+        SecondNum = FirstNum - FinalNum
+        lblDisplay.Caption = SecondNum
+
+    End If
+
+    If Multiply = True Then 'multiply
+
+        Multiply = False
+        SecondNum = FirstNum * FinalNum
+        lblDisplay.Caption = SecondNum
+
+    End If
+    
+    If Divide = True Then 'divide
+
+        Divide = False
+    
+        If FinalNum = 0 Then
+    
+            MsgBox "Cannot divide by zero.", , "Error"
+            lblDisplay.Caption = ""
+    
+        Else
+        
+            SecondNum = FirstNum / FinalNum
+            lblDisplay.Caption = SecondNum
+    
+        End If
+
+    End If
+
+    If Squared = True Then 'square
+
+        Squared = False
+        SecondNum = FinalNum ^ 2
+        lblDisplay.Caption = SecondNum
+
+    End If
+
+    If Cubed = True Then 'cube
+
+        Cubed = False
+        SecondNum = FinalNum ^ 3
+        lblDisplay.Caption = SecondNum
+
+    End If
+    
+    If SqrtB = True Then 'square root
+    
+        SqrtB = False
+        SecondNum = Sqr(FinalNum)
+        lblDisplay.Caption = SecondNum
+    
+    End If
+    
+    If powerY = True Then 'x to the power of y
+    
+        powerY = False
+        SecondNum = FirstNum ^ FinalNum
+        lblDisplay.Caption = SecondNum
+    
+    End If
+    
+    If nthRoot = True Then 'nth root
+    
+        nthRoot = False
+        SecondNum = FirstNum ^ (1 / FinalNum)
+        lblDisplay.Caption = SecondNum
+    
+    End If
+    
+    If nCr = True Then 'nCr
+    
+        If FinalNum > FirstNum Then
+        
+            MsgBox "r cannot be greater than n.", , "Error"
+            Call ResetP
+        
+        ElseIf FinalNum = FirstNum Then
+        
+            SecondNum = 1
+            lblDisplay.Caption = SecondNum
+        
+        Else
+    
+            nCr = False
+            tempN = FirstNum
+            tempnPrD = (FirstNum - FinalNum)
+            temp2nPrD = tempnPrD
+            temp3nPrD = FinalNum
+            
+            Do
+        
+                FirstNum = FirstNum - 1
+                SecondNum = FirstNum
+                tempN = tempN * SecondNum
+            
+                If tempN > 2E+100 Or tempN < -2E+100 Then
+                
+                    MsgBox "Value too high.", , "Error"
+                    Exit Do
+    
+                ElseIf tempN < -2E+100 Then
+            
+                    MsgBox "Value too low.", , "Error"
+                    Exit Do
+            
+                End If
+        
+            Loop Until FirstNum = 1
+            
+            Do
+        
+                FinalNum = FinalNum - 1
+                SecondNum = FinalNum
+                temp3nPrD = temp3nPrD * SecondNum
+            
+                If temp3nPrD > 2E+100 Or temp3nPrD < -2E+100 Then
+                
+                    MsgBox "Value too high.", , "Error"
+                    Exit Do
+    
+                ElseIf temp3nPrD < -2E+100 Then
+            
+                    MsgBox "Value too low.", , "Error"
+                    Exit Do
+            
+                End If
+        
+            Loop Until FinalNum = 1
+        
+            Do
+        
+                tempnPrD = tempnPrD - 1
+                SecondNum = tempnPrD
+                temp2nPrD = temp2nPrD * SecondNum
+            
+                If temp2nPrD > 2E+100 Or temp2nPrD < -2E+100 Then
+                
+                    MsgBox "Value too high.", , "Error"
+                    Exit Do
+    
+                ElseIf temp2nPrD < -2E+100 Then
+            
+                    MsgBox "Value too low.", , "Error"
+                    Exit Do
+            
+                End If
+        
+            Loop Until tempnPrD = 1
+        
+            SecondNum = tempN / (temp2nPrD * temp3nPrD)
+            lblDisplay.Caption = SecondNum
+
+        End If
+    
+    End If
+    
+    If nPr = True Then 'nPr
+    
+        If FinalNum > FirstNum Then
+        
+            MsgBox "r cannot be greater than n.", , "Error"
+            Call ResetP
+        
+        ElseIf FinalNum = FirstNum Then
+        
+            SecondNum = 1
+            lblDisplay.Caption = SecondNum
+            
+        Else
+    
+            nPr = False
+            tempN = FirstNum
+            tempnPrD = (FirstNum - FinalNum)
+            temp2nPrD = tempnPrD
+        
+            Do
+        
+                FirstNum = FirstNum - 1
+                SecondNum = FirstNum
+                tempN = tempN * SecondNum
+            
+                If tempN > 2E+100 Or tempN < -2E+100 Then
+                
+                    MsgBox "Value too high.", , "Error"
+                    Exit Do
+    
+                ElseIf tempN < -2E+100 Then
+            
+                    MsgBox "Value too low.", , "Error"
+                    Exit Do
+            
+                End If
+        
+            Loop Until FirstNum = 1
+        
+            Do
+        
+                tempnPrD = tempnPrD - 1
+                SecondNum = tempnPrD
+                temp2nPrD = temp2nPrD * SecondNum
+            
+                If temp2nPrD > 2E+100 Or temp2nPrD < -2E+100 Then
+                
+                    MsgBox "Value too high.", , "Error"
+                    Exit Do
+    
+                ElseIf temp2nPrD < -2E+100 Then
+            
+                    MsgBox "Value too low.", , "Error"
+                    Exit Do
+            
+                End If
+        
+            Loop Until tempnPrD = 1
+        
+            SecondNum = tempN / temp2nPrD
+            lblDisplay.Caption = SecondNum
+
+        End If
+    
+    End If
+    
+    If Factorial = True Then 'Factorial
+    
+        If FirstNum <> 0 Then
+        
+            MsgBox "Error", , "Error"
+            Call ResetP
+        
+        Else
+    
+            Factorial = False
+            SecondNum = FinalNum
+        
+            Do
+        
+                FinalNum = FinalNum - 1
+                FirstNum = FinalNum
+                SecondNum = SecondNum * FirstNum
+            
+                If SecondNum > 2E+100 Or SecondNum < -2E+100 Then
+                
+                    MsgBox "Value too high.", , "Error"
+                    Exit Do
+    
+                ElseIf SecondNum < -2E+100 Then
+            
+                    MsgBox "Value too low.", , "Error"
+                    Exit Do
+            
+                End If
+        
+            Loop Until FinalNum = 1
+        
+        lblDisplay.Caption = SecondNum
+        
+        End If
+    
+    End If
+    
+    If logB = True Then 'log
+    
+        logB = False
+        
+        If FinalNum <= 0 Then
+        
+            MsgBox "Error", , "Error"
+        
+        Else
+        
+            SecondNum = Log(FinalNum) / Log(10#)
+            lblDisplay.Caption = SecondNum
+    
+        End If
+        
+    End If
+    
+    If lnB = True Then 'log
+    
+        lnB = False
+        
+        If FinalNum <= 0 Then
+        
+            MsgBox "Error", , "Error"
+        
+        Else
+        
+            SecondNum = Log(FinalNum)
+            lblDisplay.Caption = SecondNum
+    
+        End If
+    
+    End If
+
+End If
+
+End Sub
+
+Public Sub StoreNumP()
+
+If lblDisplay.Caption = "" Then
+        
+    MsgBox "Please put in a number."
+        
+Else
+        
+    FirstNum = CDbl(lblDisplay.Caption)
+        
+End If
+        
+lblDisplay.Caption = ""
+
+End Sub
+
+Public Sub ResetP()
+
+tempNum2 = 0
+Equal = False
+Add = False
+Subtract = False
+Multiply = False
+Divide = False
+ClearEntry = True
+lblDisplay.Caption = ""
+FirstNum = 0
+tempNum = 0
+SecondNum = 0
+FunctionClick = 0
+tempNumberF = 0
+Cubed = False
+Squared = False
+SqrtB = False
+powerY = False
+nthRoot = False
+nCr = False
+nPr = False
+tempnCr = 0
+Factorial = False
+tempN = 0
+tempnPrD = 0
+temp2nPrD = 0
+temp3nPrD = 0
+lnB = False
+logB = False
+
+End Sub
+
+Public Sub NotEqualP()
+
+If FunctionClick = 2 And Equal = False Then
+        
+    If lblDisplay.Caption = "" Then
+            
+        MsgBox "Enter a number.", , "Error"
+        FunctionClick = 1
+            
+    Else
+                    
+        FunctionClick = 1
+        Call Equation(CDbl(lblDisplay.Caption))
+        tempNumberF = SecondNum
+        FirstNum = SecondNum
+        lblDisplay.Caption = tempNumberF
+                
+    End If
+            
+Else
+    
+    If lblDisplay.Caption = "" Then
+    
+        FirstNum = 0
+    
+    Else
+    
+        FirstNum = CDbl(lblDisplay.Caption)
+        lblDisplay.Caption = ""
+    
+    End If
+            
+End If
+
+End Sub
+
+Private Sub cmdScientific_Click(Index As Integer)
+
+If lblDisplay.Caption = "" Then
+
+    MsgBox "Please enter a number", , "Error"
+
+Else
+
+    Select Case Index
+
+        Case 0 'square
+    
+            Squared = True
+            Call Equation(CDbl(lblDisplay.Caption))
+    
+        Case 1 'cube
+    
+            Cubed = True
+            Call Equation(CDbl(lblDisplay.Caption))
+            
+        Case 2 'square root
+        
+            SqrtB = True
+            Call Equation(CDbl(lblDisplay.Caption))
+            
+        Case 3 'x power y
+        
+            powerY = True
+            Call StoreNumP
+        
+        Case 4 'nth root
+        
+            nthRoot = True
+            Call StoreNumP
+        
+        Case 5 'nCr
+        
+            nCr = True
+            Call StoreNumP
+        
+        Case 6 'nPr
+        
+            nPr = True
+            Call StoreNumP
+        
+        Case 7 'Factorial
+        
+            Factorial = True
+            Call Equation(CDbl(lblDisplay.Caption))
+            
+        Case 8 'log
+
+            logB = True
+            Call Equation(CDbl(lblDisplay.Caption))
+        
+        Case 9 'ln
+
+            lnB = True
+            Call Equation(CDbl(lblDisplay.Caption))
+            
+    End Select
+
+End If
+
+End Sub
+
+Private Sub optScientific_Click()
+
+optCounter = optCounter + 1
+optScientific.Value = False
+
+If optCounter = 1 Then
+
+    lblDisplay.Width = 6855
+    optScientific.Left = 7320
+    Me.Width = 9210
+    
+End If
+
+If optCounter = 2 Then
+
+    optCounter = 0
+    lblDisplay.Width = 5055
+    optScientific.Left = 5400
+    Me.Width = 7440
+
+End If
+
+End Sub
