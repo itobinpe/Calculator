@@ -1,4 +1,4 @@
-# Calculator-VB6
+# Calculator
 A scientific calculator made in VB6
 
 (Created during high school)
